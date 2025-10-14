@@ -7,3 +7,4 @@ Search Pokémon data
 Upload Pokémon file
 
 Video Tutorial:
+https://1drv.ms/v/c/8f0ba75f280e36c5/EbkEcXd_pcpPoAedCGJFL_4BkxdlYV3NgiUPd6iXstQliQ?e=s6tzWh
