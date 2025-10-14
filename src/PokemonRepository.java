@@ -1,70 +1,48 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-/**.
- * Stores Pokémon in database using the Pokedex Number.
- * CRUD (Create, Read, Update, Delete) operations.
- */
 public class PokemonRepository {
 
+    private final List<Pokemon> pokemons = new ArrayList<>();
 
-    private final Map<Integer, Pokemon> storage = new HashMap<>(); // Internal storage
-
-
-    /**
-     * Saves a Pokémon data in the database
-     */
+    // Save a new Pokémon
     public Pokemon save(Pokemon pokemon) {
-        storage.put(pokemon.getDexNumber(), pokemon);
+        pokemons.add(pokemon);
         return pokemon;
     }
 
-    /**
-     * Deletes a Pokémon by Dex number.
-     * Use PokeDex number of Pokémon to delete
-     */
-    public boolean deleteById(int dex) {
-        return storage.remove(dex) != null;
-    }
-
-    /**
-     * Updates Pokemon data
-     * Pokémon to update
-     * Updates Pokémon if exists, null if not found
-     */
+    // Update an existing Pokémon
     public Pokemon update(Pokemon pokemon) {
-        if (storage.containsKey(pokemon.getDexNumber())) {
-            storage.put(pokemon.getDexNumber(), pokemon);
-            return pokemon;
+        for (int i = 0; i < pokemons.size(); i++) {
+            if (pokemons.get(i).getDexNumber() == pokemon.getDexNumber()) {
+                pokemons.set(i, pokemon);
+                return pokemon;
+            }
         }
         return null;
     }
 
-    /**
-     * Finds a Pokémon by PokeDex number.
-     * Pokémon if found, null otherwise
-     */
+    // Delete Pokémon by Dex Number
+    public boolean deleteById(int dex) {
+        return pokemons.removeIf(p -> p.getDexNumber() == dex);
+    }
+
+    // Find Pokémon by Dex Number
     public Pokemon findById(int dex) {
-        return storage.get(dex);
-    }
-
-    /**
-     * Finds Pokémon by name (case-insensitive).
-     *
-     * List of matching Pokémon
-     */
-    public List<Pokemon> findByName(String name) {
-        List<Pokemon> results = new ArrayList<>();
-        for (Pokemon p : storage.values()) {
-            if (p.getName().equalsIgnoreCase(name)) results.add(p);
+        for (Pokemon p : pokemons) {
+            if (p.getDexNumber() == dex) return p;
         }
-        return results;
+        return null;
     }
 
-    /**
-     * Returns all Pokémon saved in the database.
-     * Shows a list of all Pokemon
-     */
-    public List<Pokemon> findAll() {
-        return new ArrayList<>(storage.values());
+    // Find Pokémon by name (or empty string for all)
+    public List<Pokemon> findByName(String name) {
+        if (name.isEmpty()) return new ArrayList<>(pokemons);
+
+        List<Pokemon> result = new ArrayList<>();
+        for (Pokemon p : pokemons) {
+            if (p.getName().equalsIgnoreCase(name)) result.add(p);
+        }
+        return result;
     }
 }

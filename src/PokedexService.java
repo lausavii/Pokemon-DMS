@@ -8,102 +8,119 @@ public class PokedexService {
 
     private final PokemonRepository repository = new PokemonRepository();
 
-    // ----------------- Upload from TXT File -----------------
-    /**
-     * Reads a TXT file and adds valid Pokémon to the repository.
-     * Returns the number of Pokémon successfully added.
-     * Returns -1 if file cannot be read.
-     */
-    public int uploadFromFile(String filePath) throws IOException {
-        List<Pokemon> addedPokemons = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            int count = 0;
-
-            while ((line = br.readLine()) != null) {
-                if (line.trim().isEmpty()) continue; // skip empty lines
-
-                String[] data = line.split(",");
-
-                // Validate correct number of fields (7 expected)
-                if (data.length != 7) continue;
-
-                try {
-                    int dex = Integer.parseInt(data[0].trim());
-                    String name = data[1].trim();
-                    String region = data[2].trim();
-                    String type1 = data[3].trim();
-                    String type2 = data[4].trim();
-                    String description = data[5].trim();
-                    boolean canEvolve = Boolean.parseBoolean(data[6].trim());
-
-                    Pokemon p = new Pokemon(dex, name, region, type1, type2, description, canEvolve);
-
-                    // Validate and avoid duplicates
-                    if (validatePokemon(p) && repository.findById(dex) == null) {
-                        repository.save(p);
-                        addedPokemons.add(p);
-                        count++;
-                    }
-                } catch (Exception e) {
-                    // Skip invalid lines (non-integer Dex, invalid boolean, etc.)
-                    continue;
-                }
-            }
-
-            return count;
-
-        } catch (IOException e) {
-            return -1; // File does not exist or cannot be read
+    // ------------------ Add a Pokémon ------------------
+    public String addPokemon(Pokemon pokemon) {
+        if (!validatePokemon(pokemon)) {
+            return "Error: Invalid or duplicate Pokémon. Ensure all required fields are filled correctly and DexNumber is unique.";
         }
+        repository.save(pokemon);
+        return "Pokémon " + pokemon.getName() + " added successfully!";
     }
 
+    // ------------------ Remove a Pokémon ------------------
+    public String removePokemon(int dex) {
+        Pokemon existing = repository.findById(dex);
+        if (existing == null) return "Error: Pokémon with Dex #" + dex + " not found.";
+        repository.deleteById(dex);
+        return "Pokémon " + existing.getName() + " removed successfully!";
+    }
 
-    /**
-     * Checks validity for adding a Pokémon:
-     * - All fields filled
-     * - Dex number unique
-     */
-    public boolean validatePokemon(Pokemon pokemon) {
-        if (pokemon.getDexNumber() <= 0 || pokemon.getName().isEmpty() ||
-                pokemon.getRegion().isEmpty() || pokemon.getType1().isEmpty() ||
-                pokemon.getDescription().isEmpty()) {
-            return false;
+    // ------------------ Update a Pokémon ------------------
+    public String updatePokemon(Pokemon pokemon) {
+        if (!validatePokemonForUpdate(pokemon)) {
+            return "Error: Pokémon with Dex #" + pokemon.getDexNumber() + " does not exist or has invalid fields.";
         }
-        // Dex must be unique
-        return repository.findById(pokemon.getDexNumber()) == null;
+        repository.update(pokemon);
+        return "Pokémon " + pokemon.getName() + " updated successfully!";
     }
 
-    /**
-     * Validation for updates (pokemon must exist)
-     */
-    public boolean validatePokemonForUpdate(Pokemon pokemon) {
-        if (pokemon.getDexNumber() <= 0 || pokemon.getName().isEmpty() ||
-                pokemon.getRegion().isEmpty() || pokemon.getType1().isEmpty() ||
-                pokemon.getDescription().isEmpty()) {
-            return false;
-        }
-        return repository.findById(pokemon.getDexNumber()) != null;
-    }
-
-
-    public Pokemon addPokemon(Pokemon pokemon) {
-        return repository.save(pokemon);
-    }
-
-    public boolean removePokemon(int dex) {
-        return repository.deleteById(dex);
-    }
-
-    public Pokemon updatePokemon(Pokemon pokemon) {
-        return repository.update(pokemon);
-    }
-
+    // ------------------ Display / Search Pokémon ------------------
     public List<Pokemon> searchPokemon(String name) {
         return repository.findByName(name);
     }
 
     public Pokemon findByDex(int dex) {
         return repository.findById(dex);
+    }
+
+    // ------------------ Upload from TXT ------------------
+    public int uploadFromFile(String filePath) throws IOException {
+        List<Pokemon> addedPokemons = new ArrayList<>();
+        int lineNumber = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lineNumber++;
+                if (line.trim().isEmpty()) continue;
+
+                String[] data = line.split(",");
+                if (data.length < 6 || data.length > 7) {
+                    System.out.println("Line " + lineNumber + ": Incorrect number of fields. Skipped.");
+                    continue;
+                }
+
+                try {
+                    int dex = Integer.parseInt(data[0].trim());
+                    String name = data[1].trim();
+                    String region = data[2].trim();
+                    String type1 = data[3].trim();
+                    String type2 = "";
+                    String desc;
+                    boolean canEvolve;
+
+                    if (data.length == 7) {
+                        type2 = data[4].trim();
+                        desc = data[5].trim();
+                        canEvolve = Boolean.parseBoolean(data[6].trim());
+                    } else {
+                        desc = data[4].trim();
+                        canEvolve = Boolean.parseBoolean(data[5].trim());
+                    }
+
+                    Pokemon p = new Pokemon(dex, name, region, type1, type2, desc, canEvolve);
+
+                    if (!validatePokemon(p)) {
+                        System.out.println("Line " + lineNumber + ": Invalid or duplicate Pokémon. Skipped.");
+                        continue;
+                    }
+
+                    repository.save(p);
+                    addedPokemons.add(p);
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Line " + lineNumber + ": Dex Number or CanEvolve field invalid. Skipped.");
+                } catch (Exception e) {
+                    System.out.println("Line " + lineNumber + ": Unknown error. Skipped.");
+                }
+            }
+        } catch (IOException e) {
+            return -1; // File could not be read
+        }
+
+        return addedPokemons.size();
+    }
+
+    // ------------------ Validation Methods ------------------
+    public boolean validatePokemon(Pokemon pokemon) {
+        if (pokemon.getDexNumber() <= 0) return false;
+        if (pokemon.getName().isEmpty()) return false;
+        if (pokemon.getRegion().isEmpty()) return false;
+        if (pokemon.getType1().isEmpty()) return false;
+        if (pokemon.getDescription().isEmpty()) return false;
+
+        // Check for duplicate DexNumber
+        return repository.findById(pokemon.getDexNumber()) == null;
+    }
+
+    public boolean validatePokemonForUpdate(Pokemon pokemon) {
+        if (pokemon.getDexNumber() <= 0) return false;
+        if (pokemon.getName().isEmpty()) return false;
+        if (pokemon.getRegion().isEmpty()) return false;
+        if (pokemon.getType1().isEmpty()) return false;
+        if (pokemon.getDescription().isEmpty()) return false;
+
+        // Check that DexNumber exists
+        return repository.findById(pokemon.getDexNumber()) != null;
     }
 }

@@ -1,62 +1,64 @@
-/**
- * Pokemon class represents a Pokemon and all of its characteristics
- * Stores all information about a Pokémon.
- * .
- */
 public class Pokemon {
+    private int dexNumber;
+    private String name;
+    private String region;
+    private String type1;
+    private String type2;
+    private String description;
+    private boolean canEvolve;
 
-    //
-    private int dexNumber;        // Unique Pokédex number
-    private String name;          // Pokémon name
-    private String region;        // Pokémon region
-    private String type1;         // Primary type
-    private String type2;         // Secondary type (optional)
-    private String description;   // Description of the Pokémon
-    private boolean canEvolve;    // Indicates if Pokémon can evolve
+    public Pokemon(int dexNumber, String name, String region, String type1, String type2, String description, boolean canEvolve) {
+        if (dexNumber <= 0) throw new IllegalArgumentException("Dex number must be positive.");
+        if (name == null || name.isBlank()) throw new IllegalArgumentException("Name cannot be empty.");
+        if (region == null || region.isBlank()) region = "Unknown";
+        if (type1 == null || type1.isBlank()) type1 = "Unknown";
 
-
-    /**
-     * Constructor method that displays a Pokemon with all required fields.
-     */
-    public Pokemon(int dexNumber, String name, String region, String type1, String type2,
-                   String description, boolean canEvolve) {
         this.dexNumber = dexNumber;
         this.name = name;
         this.region = region;
         this.type1 = type1;
-        this.type2 = type2;
-        this.description = description;
+        this.type2 = type2 != null ? type2 : "";
+        this.description = description != null ? description : "";
         this.canEvolve = canEvolve;
     }
 
-    // Getters
+    // --- Getters & Setters ---
     public int getDexNumber() { return dexNumber; }
+    public void setDexNumber(int dexNumber) { if(dexNumber>0) this.dexNumber = dexNumber; }
     public String getName() { return name; }
+    public void setName(String name) { if(name!=null && !name.isBlank()) this.name=name; }
     public String getRegion() { return region; }
+    public void setRegion(String region) { if(region!=null) this.region=region; }
     public String getType1() { return type1; }
+    public void setType1(String type1) { if(type1!=null && !type1.isBlank()) this.type1=type1; }
     public String getType2() { return type2; }
+    public void setType2(String type2) { this.type2 = type2 != null ? type2 : ""; }
     public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description != null ? description : ""; }
     public boolean isCanEvolve() { return canEvolve; }
+    public void setCanEvolve(boolean canEvolve) { this.canEvolve = canEvolve; }
 
-
-    // Setters return the object itself for method chaining
-    public Pokemon setDexNumber(int dexNumber) { this.dexNumber = dexNumber; return this; }
-    public Pokemon setName(String name) { this.name = name; return this; }
-    public Pokemon setRegion(String region) { this.region = region; return this; }
-    public Pokemon setType1(String type1) { this.type1 = type1; return this; }
-    public Pokemon setType2(String type2) { this.type2 = type2; return this; }
-    public Pokemon setDescription(String description) { this.description = description; return this; }
-    public Pokemon setCanEvolve(boolean canEvolve) { this.canEvolve = canEvolve; return this; }
-
-
-    /**
-     * Returns a formatted string with all Pokémon details.
-     */
     @Override
     public String toString() {
         return "Dex #" + dexNumber + " | " + name + " (" + region + ") [" + type1 +
-                (type2 != null && !type2.isEmpty() ? ", " + type2 : "") + "]" +
-                " Evolves: " + (canEvolve ? "Yes" : "No") +
-                "\nDescription: " + description;
+                (type2 != null && !type2.isEmpty() ? ", " + type2 : "") + "] Evolves: " +
+                (canEvolve ? "Yes" : "No") + "\nDescription: " + description;
     }
+
+    // For file storage
+    public String toFileString() {
+        return dexNumber + "," + name + "," + region + "," + type1 + "," + type2 + "," +
+                description.replace(",", ";") + "," + canEvolve;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o==null || getClass() != o.getClass()) return false;
+        Pokemon p = (Pokemon) o;
+        return dexNumber == p.dexNumber;
+    }
+
+    @Override
+    public int hashCode() { return Integer.hashCode(dexNumber); }
 }
