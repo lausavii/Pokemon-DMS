@@ -1,0 +1,20 @@
+1,Bulbasaur,Kanto,Grass,Poison,A small dinosaur-like Pokémon with a plant bulb on its back,true
+25,Pikachu,Kanto,Electric,,When several of these Pokémon gather, their electricity can build and cause lightning storms,true
+133,Eevee,Kanto,Normal,,Its ability to evolve into many forms allows it to adapt smoothly and perfectly to any environment,true
+180,Flaaffy,Johto,Electric,,Because of its rubbery, electricity-resistant skin, it can store lots of electricity in its fur,true
+728,Popplio,Alola,Water,,The balloons it inflates with its nose grow larger and larger as it practices day by day,true
+333,Swablu,Hoenn,Normal,Flying,Its wings are like cotton tufts. If it perches on someone’s head, it looks like a cotton hat,true
+77,Ponyta,Kanto,Fire,,It runs all day in fields and on mountains. About an hour after birth, Ponyta's fiery mane and tail grow out,true
+147,Dratini,Kanto,Dragon,,It is born large to start with. It repeatedly sheds its skin as it steadily grows longer,true
+152,Chikorita,Johto,Grass,,It uses the leaf on its head to determine the temperature and humidity,true
+172,Pichu,Johto,Electric,,A tiny pre-evolution of Pikachu that sparks when happy,true
+175,Togepi,Johto,Fairy,,A small egg-shaped Pokémon that brings happiness,true
+810,Grookey,Galar,Grass,,A tiny green monkey Pokémon with a drumstick-like stick,true
+813,Scorbunny,Galar,Fire,,A small white rabbit Pokémon with energetic personality,true
+815,Sobble,Galar,Water,,A timid blue lizard-like Pokémon,true
+390,Chimchar,Sinnoh,Fire,,A small orange monkey Pokémon that loves to play,true
+394,Piplup,Sinnoh,Water,,A small penguin Pokémon with a proud demeanor,true
+572,Minccino,Unova,Normal,,A small gray chinchilla Pokémon that is very clean,false
+722,Rowlet,Alola,Grass,Flying,A round owl Pokémon with a leafy bow tie,true
+840,Flabébé,Kalos,Fairy,,A tiny fairy Pokémon that clings to flowers,false
+209,Snubbull,Johto,Fairy,,A small bulldog Pokémon with a tough appearance,false

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Pokemon DMS:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Pokemon_DMS_jar</output-path>
+    <root id="archive" name="Pokemon DMS.jar">
+      <element id="module-output" name="Pokemon DMS" />
+    </root>
+  </artifact>
+</component>
