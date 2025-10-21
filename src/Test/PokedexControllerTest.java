@@ -88,6 +88,5 @@ class PokedexControllerTest {
         String badPath = controller.uploadFile("nonexistent.txt");
         assertEquals("Error: File does not exist or cannot be read.", badPath);
 
-        // For a proper test, create a temporary file with valid data if needed
     }
 }
