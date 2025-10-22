@@ -15,7 +15,7 @@ class PokedexControllerTest {
         controller = new PokedexController();
     }
 
-    // --- Test adding Pokémon ---
+    //  Test adding Pokémon
     @Test
     void testAddPokemon() {
         Pokemon p = new Pokemon(1, "Pikachu", "Kanto", "Electric", "", "Electric mouse Pokémon", true);
@@ -27,7 +27,7 @@ class PokedexControllerTest {
         assertEquals("Error: Pokémon with that Dex number already exists.", duplicate);
     }
 
-    // --- Test removing Pokémon ---
+    // Test removing Pokémon
     @Test
     void testRemovePokemon() {
         Pokemon p = new Pokemon(2, "Charmander", "Kanto", "Fire", "", "Fire lizard Pokémon", true);
@@ -47,7 +47,7 @@ class PokedexControllerTest {
         assertEquals("Operation canceled.", canceled);
     }
 
-    // --- Test updating Pokémon ---
+    // Test updating Pokémon
     @Test
     void testUpdatePokemon() {
         Pokemon p = new Pokemon(3, "Bulbasaur", "Kanto", "Grass", "Poison", "Seed Pokémon", true);
@@ -64,7 +64,7 @@ class PokedexControllerTest {
         assertEquals("Error: Pokémon not found.", error);
     }
 
-    // --- Test searching Pokémon ---
+    // Test searching Pokémon
     @Test
     void testSearchPokemon() {
         Pokemon p1 = new Pokemon(4, "Squirtle", "Kanto", "Water", "", "Tiny turtle Pokémon", true);
@@ -81,10 +81,9 @@ class PokedexControllerTest {
         assertEquals(2, all.size());
     }
 
-    // --- Test uploading file ---
+    // Test uploading file
     @Test
     void testUploadFile() {
-        // Here, just simulate a bad file path
         String badPath = controller.uploadFile("nonexistent.txt");
         assertEquals("Error: File does not exist or cannot be read.", badPath);
 

@@ -15,7 +15,7 @@ class PokemonRepositoryTest {
         repository = new PokemonRepository();
     }
 
-    // --- Test saving a new Pokémon ---
+    // Test saving a new Pokémon
     @Test
     void testSave() {
         // Create a Pokémon with all 7 arguments
@@ -36,7 +36,7 @@ class PokemonRepositoryTest {
         assertTrue(all.contains(pikachu), "Repository should contain the saved Pokémon");
     }
 
-    // --- Test updating an existing Pokémon ---
+    // Test updating an existing Pokémon
     @Test
     void testUpdate() {
         Pokemon charmander = new Pokemon(4, "Charmander", "Kanto", "Fire", "", "Lizard Pokémon", true);
@@ -49,7 +49,7 @@ class PokemonRepositoryTest {
         assertEquals("Tiny flame Pokémon", updated.getDescription(), "Description should be updated");
     }
 
-    // --- Test deleting a Pokémon ---
+    // Test deleting a Pokémon
     @Test
     void testDeleteById() {
         Pokemon bulbasaur = new Pokemon(1, "Bulbasaur", "Kanto", "Grass", "Poison", "Seed Pokémon", true);
@@ -60,7 +60,7 @@ class PokemonRepositoryTest {
         assertNull(repository.findById(1), "Repository should no longer contain Bulbasaur");
     }
 
-    // --- Test finding Pokémon by Dex Number ---
+    // Test finding Pokémon by Dex Number
     @Test
     void testFindById() {
         Pokemon squirtle = new Pokemon(7, "Squirtle", "Kanto", "Water", "", "Tiny Turtle Pokémon", true);
@@ -70,14 +70,15 @@ class PokemonRepositoryTest {
         assertEquals(squirtle, found, "Should find Squirtle by Dex Number");
     }
 
-    // --- Test finding Pokémon by Name ---
+    // Test finding Pokémon by Name
     @Test
     void testFindByName() {
         Pokemon meowth = new Pokemon(52, "Meowth", "Kanto", "Normal", "", "Scratch Cat Pokémon", true);
         repository.save(meowth);
 
         List<Pokemon> result = repository.findByName("Meowth");
-        assertEquals(1, result.size(), "Should find 1 Pokémon with name Meowth");
+        assertEquals(1, result.size(), "Should find 1 Pokémo" +
+                "n with name Meowth");
         assertEquals(meowth, result.get(0), "Found Pokémon should be Meowth");
 
         // Test empty string returns all Pokémon
