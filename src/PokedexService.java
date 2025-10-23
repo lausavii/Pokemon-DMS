@@ -8,7 +8,7 @@ public class PokedexService {
 
     private final PokemonRepository repository = new PokemonRepository();
 
-    // ------------------ Add a Pokémon ------------------
+    //  Add a Pokémon
     public String addPokemon(Pokemon pokemon) {
         if (!validatePokemon(pokemon)) {
             return "Error: Invalid or duplicate Pokémon. Ensure all required fields are filled correctly and DexNumber is unique.";
@@ -17,15 +17,15 @@ public class PokedexService {
         return "Pokémon " + pokemon.getName() + " added successfully!";
     }
 
-    // ------------------ Remove a Pokémon ------------------
+    //  Remove a Pokémon
     public String removePokemon(int dex) {
         Pokemon existing = repository.findById(dex);
         if (existing == null) return "Error: Pokémon with Dex #" + dex + " not found.";
         repository.deleteById(dex);
-        return "Pokémon " + existing.getName() + " removed successfully!";
+        return "Pokémon " + existing.getName() + " has been released successfully!";
     }
 
-    // ------------------ Update a Pokémon ------------------
+    // Update a Pokémon
     public String updatePokemon(Pokemon pokemon) {
         if (!validatePokemonForUpdate(pokemon)) {
             return "Error: Pokémon with Dex #" + pokemon.getDexNumber() + " does not exist or has invalid fields.";
@@ -34,7 +34,7 @@ public class PokedexService {
         return "Pokémon " + pokemon.getName() + " updated successfully!";
     }
 
-    // ------------------ Display / Search Pokémon ------------------
+    //  Display / Search Pokémon
     public List<Pokemon> searchPokemon(String name) {
         return repository.findByName(name);
     }
@@ -43,7 +43,7 @@ public class PokedexService {
         return repository.findById(dex);
     }
 
-    // ------------------ Upload from TXT ------------------
+    // Upload from TXT
     public int uploadFromFile(String filePath) throws IOException {
         List<Pokemon> addedPokemons = new ArrayList<>();
         int lineNumber = 0;
@@ -101,7 +101,7 @@ public class PokedexService {
         return addedPokemons.size();
     }
 
-    // ------------------ Validation Methods ------------------
+    // Validation Methods
     public boolean validatePokemon(Pokemon pokemon) {
         if (pokemon.getDexNumber() <= 0) return false;
         if (pokemon.getName().isEmpty()) return false;

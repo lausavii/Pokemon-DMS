@@ -51,7 +51,7 @@ public class PokedexApp {
         return "Application terminated.";
     }
 
-    // --- Flow Methods ---
+    // Flow Methods
 
     public String addPokemonFlow() {
         try {
@@ -85,7 +85,7 @@ public class PokedexApp {
 
             return service.addPokemon(p);
         } catch (NumberFormatException e) {
-            return "Error: Dex Number must be an integer.";
+            return "Error: PokeDex Number must be an integer.";
         } catch (Exception e) {
             return "Error: Invalid input. Pokémon not added.";
         }
@@ -99,11 +99,17 @@ public class PokedexApp {
             Pokemon existing = service.findByDex(dex);
             if (existing == null) return "Error: Pokémon with PokeDex #" + dex + " not found.";
 
-            System.out.print("Are you sure you want to release this Pokémon? (yes/no): ");
-            boolean confirm = scanner.nextLine().trim().equalsIgnoreCase("yes");
+            String confirmInput;
+            while (true) {
+                System.out.print("Are you sure you want to release this Pokémon? (yes/no): ");
+                confirmInput = scanner.nextLine().trim().toLowerCase();
+                if (confirmInput.equals("yes") || confirmInput.equals("no")) break;
+                System.out.println("Invalid input. Please enter 'yes' or 'no'.");
+            }
 
-            if (!confirm) return "Operation canceled.";
+            if (confirmInput.equals("no")) return "Operation canceled.";
             return service.removePokemon(dex);
+
         } catch (NumberFormatException e) {
             return "Error: PokeDex Number must be an integer.";
         } catch (Exception e) {
@@ -155,8 +161,14 @@ public class PokedexApp {
                         existing.setDescription(scanner.nextLine().trim());
                     }
                     case "6" -> {
-                        System.out.print("Can Evolve? (true/false): ");
-                        existing.setCanEvolve(Boolean.parseBoolean(scanner.nextLine().trim()));
+                        String evolveInput;
+                        while (true) {
+                            System.out.print("Can Evolve? (yes/no): ");
+                            evolveInput = scanner.nextLine().trim().toLowerCase();
+                            if (evolveInput.equals("yes") || evolveInput.equals("no")) break;
+                            System.out.println("Invalid input. Please enter 'yes' or 'no'.");
+                        }
+                        existing.setCanEvolve(evolveInput.equals("yes"));
                     }
                     case "7" -> updating = false;
                     default -> System.out.println("Invalid choice. Try again.");

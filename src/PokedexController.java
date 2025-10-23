@@ -6,7 +6,7 @@ public class PokedexController {
 
     private final List<Pokemon> pokemons = new ArrayList<>();
 
-    // --- CRUD Operations ---
+    // CRUD Operations
 
     public String addPokemon(Pokemon p) {
         if (pokemons.contains(p)) return "Error: Pokémon with that Dex number already exists.";
